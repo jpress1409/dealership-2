@@ -4,30 +4,51 @@ public abstract class Contract {
     private String dateOfContract;
     private String custName;
     private String custEmail;
-    private double totPrice;
+    private static double totalPrice;
     private double monthlyPay;
     private int numOfMonths;
+    private Vehicle vehicleSold;
 
-    public Contract(String dateOfContract, String custName, String custEmail, double totPrice, double monthlyPay) {
+    public Contract() {
         this.dateOfContract = dateOfContract;
         this.custName = custName;
         this.custEmail = custEmail;
-        this.totPrice = totPrice;
+        this.totalPrice = totalPrice;
         this.monthlyPay = monthlyPay;
     }
-    @Override
+
     public double getTotalPrice(){
-        if(SalesContract.isFinance()){
-            return SalesContract.getTotalPrice();
+        if(SalesContract.isFinanceOption()){
+            return getTotalPrice();
         }
-        return LeaseContract.getTotalPrice();
+        return getTotalPrice();
     }
-    @Override
+
     public double getMonthlyPayment(){
         if(numOfMonths == 48){
-            return (1.0425 * totPrice) / numOfMonths;
+            return (1.0425 * totalPrice) / numOfMonths;
         }
-        return (totPrice * 1.0525) /  numOfMonths;
+        return (totalPrice * 1.0525) /  numOfMonths;
+    }
+
+    public static void setTotalPrice(double totalPrice) {
+        Contract.totalPrice = totalPrice;
+    }
+
+    public int getNumOfMonths() {
+        return numOfMonths;
+    }
+
+    public void setNumOfMonths(int numOfMonths) {
+        this.numOfMonths = numOfMonths;
+    }
+
+    public Vehicle getVehicleSold() {
+        return vehicleSold;
+    }
+
+    public void setVehicleSold(Vehicle vehicleSold) {
+        this.vehicleSold = vehicleSold;
     }
 
     public String getDateOfContract() {
@@ -55,11 +76,11 @@ public abstract class Contract {
     }
 
     public static double getTotPrice() {
-        return totPrice;
+        return totalPrice;
     }
 
     public void setTotPrice(double totPrice) {
-        this.totPrice = totPrice;
+        this.totalPrice = totPrice;
     }
 
     public double getMonthlyPay() {

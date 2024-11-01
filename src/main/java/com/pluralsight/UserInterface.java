@@ -143,7 +143,7 @@ public class UserInterface {
         vehicle.setOdometer(odometer);
         vehicle.setPrice(price);
 
-        DealershipFileMan.saveDealership(dealership, FILE_NAME);
+        DealershipFileMan.saveDealership(dealership);
 
         dealership.addVehicle(vehicle);
 
@@ -159,13 +159,14 @@ public class UserInterface {
         if(vehicle.getVin() == vin){
             dealership.removeVehicle();
             System.out.println(vehicle.getVin() + " has been removed.");
-        }else{
-            System.out.println("it no worky");
         }
 
 
 
 
 
+    }
+    public void processContractRequest(){
+        System.out.println("");
     }
 }

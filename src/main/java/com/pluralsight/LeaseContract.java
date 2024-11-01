@@ -1,40 +1,47 @@
 package com.pluralsight;
 
-public class LeaseContract {
-    private static double expEndVal;
+public class LeaseContract extends Contract {
+    private static double expectedEndingValue;
     private static double leaseFee;
     private static double monthlyPay;
-    private static double totPrice;
 
     public LeaseContract() {
+
     }
+
     @Override
-    public static double getTotalPrice();{
-        return totPrice;
+    public double getTotalPrice() {
+        return (getVehicleSold().getPrice() - expectedEndingValue) + leaseFee;
+    }
+
+    @Override
+    public double getMonthlyPayment() {
+        int numberOfPayments = 36;
+        double interestRate = 4.0 / 1200;
+        double monthlyPayment = getTotalPrice() * (interestRate * Math.pow(1 + interestRate, numberOfPayments)) / (Math.pow(1 + interestRate, numberOfPayments) - 1);
+        monthlyPayment = Math.round(monthlyPayment * 100);
+        monthlyPayment /= 100;
+        return monthlyPayment;
     }
 
 
-    public static double getExpEndVal() {
-        return expEndVal;
+    public static double getExpectedEndingValue() {
+        return expectedEndingValue;
     }
 
-    public static void setExpEndVal(double expEndVal) {
-        LeaseContract.expEndVal = expEndVal;
+    public void setExpectedEndingValue(double expEndVal) {
+        LeaseContract.expectedEndingValue = expectedEndingValue;
     }
 
-    public static double getLeaseFee() {
+    public double getLeaseFee() {
         return leaseFee;
     }
 
     public static void setLeaseFee(double leaseFee) {
         LeaseContract.leaseFee = leaseFee;
     }
-
-    public static double getMonthlyPay() {
-        return monthlyPay;
-    }
-
-    public static void setMonthlyPay(double monthlyPay) {
+    public void setMonthlyPay(double monthlyPay) {
         LeaseContract.monthlyPay = monthlyPay;
     }
+
 }

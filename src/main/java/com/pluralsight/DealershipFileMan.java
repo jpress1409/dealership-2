@@ -12,30 +12,24 @@ public class DealershipFileMan {
         this.dealership = new Dealership("", "", "");
     }
 
-    public static void saveDealership(Dealership dealership, String FILE_NAME) {
+    public static void saveDealership(Dealership dealership) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("dealership.csv"))) {
+            // Write dealership information
+            bw.write(dealership.getName() + "|" + dealership.getAddress() + "|" + dealership.getPhone());
+            bw.newLine();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            // Write vehicle inventory
+            for (Vehicle vehicle : dealership.getAllVehicles()) {
+                bw.write(vehicle.getVin() + "|" + vehicle.getYear() + "|" + vehicle.getMake() + "|" + vehicle.getModel()
+                        + "|" + vehicle.getVehicleType() + "|" + vehicle.getColor() + "|" + vehicle.getOdometer()
+                        + "|" + vehicle.getPrice());
+                bw.newLine();
+            }
 
-            writer.newLine();
-            for(Vehicle vehicle : dealership.getAllVehicles()){
-                StringBuilder builder = new StringBuilder();
-
-                builder.append(vehicle.getVin()).append(" | ");
-                builder.append(vehicle.getYear()).append(" | ");
-                builder.append(vehicle.getMake()).append(" | ");
-                builder.append(vehicle.getModel()).append(" | ");
-                builder.append(vehicle.getVehicleType()).append(" | ");
-                builder.append(vehicle.getColor()).append(" | ");
-                builder.append(vehicle.getOdometer()).append(" | $");
-                builder.append(vehicle.getPrice());
-
-                String result = builder.toString();
-                writer.write(result);
-                writer.newLine();}
-        } catch(Exception e){
+            System.out.println("Dealership saved successfully to dealership.csv.");
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 

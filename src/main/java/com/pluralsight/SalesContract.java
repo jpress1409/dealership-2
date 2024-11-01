@@ -1,19 +1,20 @@
 package com.pluralsight;
 
-public class SalesContract {
-    private double salesTaxAmount;
-    private int recodingFee;
-    private int processFee;
-    private static boolean finance;
-    private double monthlyPay;
+public class SalesContract extends Contract{
+    private static double monthlyPay;
+    private static double salesTaxAmount;
+    private static int recordingFee;
+    private static int processFee;
+    private static boolean financeOption;
+    private static double monthlyPayment;
     private static double totPrice;
-    private int numOfMonths;
+    private static int numOfMonths;
 
     public SalesContract(double salesTaxAmount, int recodingFee, int processFee, boolean finance, double monthlyPay) {
         this.salesTaxAmount = 0.05;
-        this.recodingFee = 100;
+        this.recordingFee = 100;
         this.processFee = processFee;
-        this.finance = finance;
+        this.financeOption = financeOption;
         this.monthlyPay = monthlyPay;
     }
 
@@ -26,11 +27,11 @@ public class SalesContract {
     }
 
     public int getRecodingFee() {
-        return recodingFee;
+        return recordingFee;
     }
 
     public void setRecodingFee(int recodingFee) {
-        this.recodingFee = recodingFee;
+        this.recordingFee = recodingFee;
     }
 
     public int getProcessFee() {
@@ -43,23 +44,37 @@ public class SalesContract {
         this.processFee = processFee;
     }
 
-    public static boolean isFinance() {
-        return finance;
+    public static boolean isFinanceOption() {
+        return financeOption;
     }
 
-    public void setFinance(boolean finance) {
-        this.finance = finance;
+    public void setFinanceOption(boolean finance) {
+        this.financeOption = financeOption;
     }
     @Override
-    public static double getTotalPrice(){
+    public double getTotalPrice() {
+        return getVehicleSold().getPrice() + salesTaxAmount + recordingFee + processFee;
+    }
 
-        return totPrice;
-    }
     @Override
-    public double getMonthlyPayment(){
-        if(numOfMonths == 48){
-            return (1.0425 * totPrice) / numOfMonths;
+    public double getMonthlyPayment() {
+        int numberOfPayments = 0;
+        double interestRate = 0;
+        if (financeOption) {
+            if (getVehicleSold().getPrice() >= 10000) {
+                numberOfPayments = 48;
+                interestRate = 4.25 / 1200;
+            } else {
+                numberOfPayments = 24;
+                interestRate = 5.25 / 1200;
+            }
+
+            double monthlyPayment = getTotalPrice() * (interestRate * Math.pow(1 + interestRate, numberOfPayments)) / (Math.pow(1 + interestRate, numberOfPayments) - 1);
+            monthlyPayment = Math.round(monthlyPayment * 100);
+            monthlyPayment /= 100;
+            return monthlyPayment;
+        } else {
+            return 0.0;
         }
-        return (totPrice * 1.0525) /  numOfMonths;
     }
 }
