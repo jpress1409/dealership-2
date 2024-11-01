@@ -31,7 +31,7 @@ public class ContractFileMan {
         writer.newLine();
             StringBuilder builder = new StringBuilder();
 
-            builder.append(vehicle.getVin()).append(" | ");
+            builder.append(.getVin()).append(" | ");
             builder.append(vehicle.getYear()).append(" | ");
             builder.append(vehicle.getMake()).append(" | ");
             builder.append(vehicle.getModel()).append(" | ");
