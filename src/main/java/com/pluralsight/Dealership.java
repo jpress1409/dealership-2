@@ -98,7 +98,7 @@ public class Dealership {
         }
         return vehicles;
     }
-    public static ArrayList<Vehicle> getAllVehicles(){
+    public ArrayList<Vehicle> getAllVehicles(){
         return inventory;
     }
     public void addVehicle(Vehicle vehicle){
