@@ -3,6 +3,8 @@ package com.pluralsight;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ContractFileMan {
     private static String FILE_NAME = "contracts.csv";
@@ -11,12 +13,12 @@ public class ContractFileMan {
     public ContractFileMan() throws IOException {
     }
 
-    public static void saveContract(Contract contract){
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));){
-            if(contract instanceof LeaseContract){
-               leaseContract(dealership);
-            }else if(contract instanceof SalesContract){
-                salesContract();
+    public static void saveContract(Contract contract) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));) {
+            if (contract instanceof LeaseContract) {
+                leaseContract(writer);
+            } else if (contract instanceof SalesContract) {
+                salesContract(writer);
             }
 
 
@@ -25,41 +27,56 @@ public class ContractFileMan {
         }
 
     }
+
     private static String leaseContract(BufferedWriter writer) throws IOException {
+        LocalDate today = LocalDate.now();
+        String buyerEmail;
+        String buyerName;
+
+        ArrayList<Vehicle> inventory = new ArrayList();
+        Vehicle soldVehicle = UserInterface.processSellVehicleRequest(inventory);
 
 
         writer.newLine();
-            StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
-            builder.append(.getVin()).append(" | ");
-            builder.append(vehicle.getYear()).append(" | ");
-            builder.append(vehicle.getMake()).append(" | ");
-            builder.append(vehicle.getModel()).append(" | ");
-            builder.append(vehicle.getVehicleType()).append(" | ");
-            builder.append(vehicle.getColor()).append(" | ");
-            builder.append(vehicle.getOdometer()).append(" | $");
-            builder.append(vehicle.getPrice());
+        builder.append(soldVehicle.getVin()).append(" | ");
+        builder.append(soldVehicle.getYear()).append(" | ");
+        builder.append(soldVehicle.getMake()).append(" | ");
+        builder.append(soldVehicle.getModel()).append(" | ");
+        builder.append(soldVehicle.getVehicleType()).append(" | ");
+        builder.append(soldVehicle.getColor()).append(" | ");
+        builder.append(soldVehicle.getOdometer()).append(" | $");
+        builder.append(soldVehicle.getPrice());
 
-            String result = builder.toString();
+        String result = builder.toString();
 
-            return result;
+        return result;
     }
-    private static String salesContract() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
+
+    private static String salesContract(BufferedWriter writer) throws IOException {
+        LocalDate today = LocalDate.now();
+        String buyerEmail;
+        String buyerName;
+
+        ArrayList<Vehicle> inventory = new ArrayList();
+        Vehicle soldVehicle = UserInterface.processSellVehicleRequest(inventory);
+
         writer.newLine();
+        StringBuilder builder = new StringBuilder();
 
-                StringBuilder builder = new StringBuilder();
+        builder.append(soldVehicle.getVin()).append(" | ");
+        builder.append(soldVehicle.getYear()).append(" | ");
+        builder.append(soldVehicle.getMake()).append(" | ");
+        builder.append(soldVehicle.getModel()).append(" | ");
+        builder.append(soldVehicle.getVehicleType()).append(" | ");
+        builder.append(soldVehicle.getColor()).append(" | ");
+        builder.append(soldVehicle.getOdometer()).append(" | $");
+        builder.append(soldVehicle.getPrice());
 
-                builder.append(vehicle.getVin()).append(" | ");
-                builder.append(vehicle.getYear()).append(" | ");
-                builder.append(vehicle.getMake()).append(" | ");
-                builder.append(vehicle.getModel()).append(" | ");
-                builder.append(vehicle.getVehicleType()).append(" | ");
-                builder.append(vehicle.getColor()).append(" | ");
-                builder.append(vehicle.getOdometer()).append(" | $");
-                builder.append(vehicle.getPrice());
+        String result = builder.toString();
 
-                String result = builder.toString();
-            return result;
+        return result;
     }
+}
 

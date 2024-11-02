@@ -1,5 +1,8 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Vehicle {
     private int vin;
     private int year;
@@ -9,6 +12,7 @@ public class Vehicle {
     private String color;
     private int odometer;
     private double price;
+    Scanner scan = new Scanner(System.in);
 
     public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
         this.vin = vin;
@@ -19,6 +23,32 @@ public class Vehicle {
         this.color = color;
         this.odometer = odometer;
         this.price = price;
+
+    }public Vehicle getVehicleByVin(ArrayList<Vehicle> inventory){
+        System.out.println("Enter VIN of vehicle: ");
+        int vin = scan.nextInt();
+
+        Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+
+        if(vin == vehicle.getVin()){
+            for(Vehicle vehicle : inventory){
+                vehicle.getVin();
+                vehicle.getYear();
+                vehicle.getMake();
+                vehicle.getModel();
+                vehicle.getVehicleType();
+                vehicle.getColor();
+                vehicle.getOdometer();
+                vehicle.getPrice();
+            }
+
+            Vehicle vehicle = new Vehicle(vehicle.setVin(vin));
+        }
+
+
+
+
+        return vehicle;
     }
 
     public int getVin() {

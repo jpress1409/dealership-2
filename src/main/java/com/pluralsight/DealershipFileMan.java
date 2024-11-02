@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.time.LocalDate;
 
 public class DealershipFileMan {
 
@@ -13,6 +14,7 @@ public class DealershipFileMan {
     }
 
     public static void saveDealership(Dealership dealership) {
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("dealership.csv"))) {
             // Write dealership information
             bw.write(dealership.getName() + "|" + dealership.getAddress() + "|" + dealership.getPhone());

@@ -7,7 +7,7 @@ public class UserInterface {
 
     private String FILE_NAME;
     private Dealership dealership;
-    Scanner scan = new Scanner(System.in);
+    private static Scanner scan = new Scanner(System.in);
 
     private Dealership init(){
         DealershipFileMan fileMan = new DealershipFileMan();
@@ -45,6 +45,7 @@ public class UserInterface {
             case 7 -> processGetAllVehicle();
             case 8 -> processAddVehicleRequest();
             case 9 -> processRemoveVehicleRequest(inventory);
+            case 10 -> processSellVehicleRequest(inventory);
             case 99 -> loop = false;
             default -> System.out.println("Invalid Entry");
 
@@ -160,13 +161,17 @@ public class UserInterface {
             dealership.removeVehicle();
             System.out.println(vehicle.getVin() + " has been removed.");
         }
-
-
-
-
-
     }
     public void processContractRequest(){
         System.out.println("");
     }
+public static Vehicle processSellVehicleRequest(ArrayList<Vehicle>inventory){
+    System.out.println("Enter VIN of vehicle you would like to sell");
+    int vin = scan.nextInt();
+for(Vehicle vehicle : inventory )
+    if(vin == vehicle.getVin()){
+    return vehicle;
+    }
+return null;
+}
 }
