@@ -7,18 +7,18 @@ public class SalesContract extends Contract{
     private static int processFee;
     private static boolean financeOption;
     private static double monthlyPayment;
-    private static double totPrice;
+    private static double totalPrice;
     private static int numOfMonths;
 
-    public SalesContract(double salesTaxAmount, int recodingFee, int processFee, boolean finance, double monthlyPay) {
-        this.salesTaxAmount = 0.05;
-        this.recordingFee = 100;
-        this.processFee = processFee;
-        this.financeOption = financeOption;
-        this.monthlyPay = monthlyPay;
+    public SalesContract() {
     }
 
-    public double getSalesTaxAmount() {
+    @Override
+    public double getMonthlyPay() {
+        return monthlyPay;
+    }
+
+    public static double getSalesTaxAmount() {
         return salesTaxAmount;
     }
 
@@ -26,7 +26,7 @@ public class SalesContract extends Contract{
         this.salesTaxAmount = salesTaxAmount;
     }
 
-    public int getRecodingFee() {
+    public static int getRecordingFee() {
         return recordingFee;
     }
 
@@ -34,7 +34,7 @@ public class SalesContract extends Contract{
         this.recordingFee = recodingFee;
     }
 
-    public int getProcessFee() {
+    public static int getProcessFee() {
         if(Contract.getTotPrice() < 10000){
             return 295;}
         return 495;

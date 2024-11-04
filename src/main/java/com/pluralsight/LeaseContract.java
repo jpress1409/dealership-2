@@ -3,15 +3,10 @@ package com.pluralsight;
 public class LeaseContract extends Contract {
     private static double expectedEndingValue;
     private static double leaseFee;
-    private static double monthlyPay;
+    private static double monthlyPayment;
 
     public LeaseContract() {
 
-    }
-
-    @Override
-    public double getTotalPrice() {
-        return (getVehicleSold().getPrice() - expectedEndingValue) + leaseFee;
     }
 
     @Override
@@ -23,7 +18,10 @@ public class LeaseContract extends Contract {
         monthlyPayment /= 100;
         return monthlyPayment;
     }
-
+    @Override
+    public double getTotalPrice() {
+        return (getVehicleSold().getPrice() - expectedEndingValue) + leaseFee;
+    }
 
     public static double getExpectedEndingValue() {
         return expectedEndingValue;
@@ -33,15 +31,15 @@ public class LeaseContract extends Contract {
         LeaseContract.expectedEndingValue = expectedEndingValue;
     }
 
-    public double getLeaseFee() {
+    public static double getLeaseFee() {
         return leaseFee;
     }
 
-    public static void setLeaseFee(double leaseFee) {
+    public void setLeaseFee(double leaseFee) {
         LeaseContract.leaseFee = leaseFee;
     }
     public void setMonthlyPay(double monthlyPay) {
-        LeaseContract.monthlyPay = monthlyPay;
+        LeaseContract.monthlyPayment = monthlyPay;
     }
 
 }

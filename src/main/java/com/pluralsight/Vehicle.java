@@ -11,7 +11,7 @@ public class Vehicle {
     private String vehicleType;
     private String color;
     private int odometer;
-    private double price;
+    private static double price;
     Scanner scan = new Scanner(System.in);
 
     public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
@@ -31,7 +31,7 @@ public class Vehicle {
         Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
 
         if(vin == vehicle.getVin()){
-            for(Vehicle vehicle : inventory){
+            for(int i = 0; i < inventory.size(); i++){
                 vehicle.getVin();
                 vehicle.getYear();
                 vehicle.getMake();
@@ -42,7 +42,6 @@ public class Vehicle {
                 vehicle.getPrice();
             }
 
-            Vehicle vehicle = new Vehicle(vehicle.setVin(vin));
         }
 
 
@@ -107,7 +106,7 @@ public class Vehicle {
         this.odometer = odometer;
     }
 
-    public double getPrice() {
+    public static double getPrice() {
         return price;
     }
 
