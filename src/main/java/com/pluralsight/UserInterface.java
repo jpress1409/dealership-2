@@ -1,23 +1,25 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
 
-    private String FILE_NAME;
+    private String FILE_NAME = "contracts.csv";
     private Dealership dealership;
     private static Scanner scan = new Scanner(System.in);
 
-    private Dealership init(){
+    private Dealership init() {
         DealershipFileMan fileMan = new DealershipFileMan();
 
         return fileMan.getDealership();
     }
 
-    public void display(boolean loop){
+    public void display(boolean loop) throws IOException {
         this.dealership = init();
-
 
 
         System.out.println("What would you like to do?");
@@ -30,12 +32,13 @@ public class UserInterface {
         System.out.println("(7) List All Vehicles");
         System.out.println("(8) Add Vehicle");
         System.out.println("(9) Remove Vehicle");
+        System.out.println("(10) Sell or Lease Car");
         System.out.println("(99) Exit");
         int choice = scan.nextInt();
         scan.nextLine();
 
         ArrayList<Vehicle> inventory = new ArrayList<>();
-        switch(choice){
+        switch (choice) {
             case 1 -> processGetByPriceRequest();
             case 2 -> processGetByMakeModelRequest();
             case 3 -> processGetByYearRequest();
@@ -45,19 +48,21 @@ public class UserInterface {
             case 7 -> processGetAllVehicle();
             case 8 -> processAddVehicleRequest();
             case 9 -> processRemoveVehicleRequest(inventory);
-            case 10 -> processSellVehicleRequest(inventory);
+            case 10 -> sellRequestMenu();
             case 99 -> loop = false;
             default -> System.out.println("Invalid Entry");
 
         }
 
     }
-    private void displayVehicles(ArrayList<Vehicle> inventory){
-        for(Vehicle vehicle : inventory){
+
+    private void displayVehicles(ArrayList<Vehicle> inventory) {
+        for (Vehicle vehicle : inventory) {
             System.out.println(vehicle);
         }
     }
-    public void processGetByPriceRequest(){
+
+    public void processGetByPriceRequest() {
         System.out.println("Please Enter the Minimum Amount");
         double priceMin = scan.nextDouble();
 
@@ -67,13 +72,15 @@ public class UserInterface {
         displayVehicles(dealership.getVehicleByPrice(priceMin, priceMax));
 
     }
-    public void processGetByMakeModelRequest(){
+
+    public void processGetByMakeModelRequest() {
         System.out.println("Enter make and/or model fo car");
         String makeModel = scan.nextLine().toUpperCase();
 
         displayVehicles(dealership.getVehicleByMakeModel(makeModel));
     }
-    public void processGetByYearRequest(){
+
+    public void processGetByYearRequest() {
         System.out.println("Enter Newest");
         int yearMax = scan.nextInt();
         System.out.println("Enter Oldest");
@@ -82,13 +89,15 @@ public class UserInterface {
 
         displayVehicles(dealership.getVehicleByYear(yearMin, yearMax));
     }
-    public void processGetByColorRequest(){
+
+    public void processGetByColorRequest() {
         System.out.println("Enter Color");
         String color = scan.nextLine().toUpperCase();
 
         displayVehicles(dealership.getVehicleByColor(color));
     }
-    public void processGetByMileageRequest(){
+
+    public void processGetByMileageRequest() {
         System.out.println("Enter Minimum Mileage");
         int mileMin = scan.nextInt();
 
@@ -98,16 +107,19 @@ public class UserInterface {
 
         displayVehicles(dealership.getVehicleByMileage(mileMin, mileMax));
     }
-    public void processGetVehicleTypeRequest(){
+
+    public void processGetVehicleTypeRequest() {
         System.out.println("Sedan, SUV, Truck or Coup?");
         String type = scan.nextLine();
 
         displayVehicles(dealership.getVehicleByType(type));
     }
-    public void processGetAllVehicle(){
+
+    public void processGetAllVehicle() {
         displayVehicles(dealership.getAllVehicles());
     }
-    public void processAddVehicleRequest(){
+
+    public void processAddVehicleRequest() {
         System.out.println("Enter VIN");
         int vin = scan.nextInt();
 
@@ -149,29 +161,53 @@ public class UserInterface {
         dealership.addVehicle(vehicle);
 
 
-
     }
-    public void processRemoveVehicleRequest(ArrayList<Vehicle>inventory){
+
+    public void processRemoveVehicleRequest(ArrayList<Vehicle> inventory) {
 
         System.out.println("Enter the VIN of the vehicle you would like to remove");
         int vin = scan.nextInt();
 
         Vehicle vehicle = dealership.getVehicleByVin(vin);
-        if(vehicle.getVin() == vin){
+        if (vehicle.getVin() == vin) {
             dealership.removeVehicle();
             System.out.println(vehicle.getVin() + " has been removed.");
         }
     }
-    public void processContractRequest(){
-        System.out.println("");
+
+    public void sellRequestMenu() throws IOException {
+        System.out.println("(1)Lease or (2)Sale");
+        int choice = scan.nextInt();
+        scan.nextLine();
+
+        switch (choice) {
+            case 1 -> {
+                LeaseContract leaseContract = new LeaseContract();
+                ContractFileMan.saveContract(leaseContract);
+            }
+            case 2 -> {
+                SalesContract salesContract = new SalesContract();
+                ContractFileMan.saveContract(salesContract);
+            }
+            default -> System.out.println("Invalid Input");
+        }
     }
-public static Vehicle processSellVehicleRequest(ArrayList<Vehicle>inventory){
-    System.out.println("Enter VIN of vehicle you would like to sell");
-    int vin = scan.nextInt();
-for(Vehicle vehicle : inventory )
-    if(vin == vehicle.getVin()){
-    return vehicle;
+
+
+    public Vehicle processSellVehicleRequest(ArrayList<Vehicle> inventory) {
+        init();
+
+        System.out.println("Enter VIN of vehicle you would like to sell");
+        int vin = scan.nextInt();
+
+        for (Vehicle vehicle : inventory) {
+
+            if (vehicle != null && vin == vehicle.getVin()) {
+                System.out.println("Vehicle null");
+                return vehicle;
+            }
+        }
+
+        return null;
     }
-return null;
-}
 }

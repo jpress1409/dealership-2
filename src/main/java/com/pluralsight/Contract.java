@@ -10,6 +10,8 @@ public abstract class Contract {
     private static Vehicle vehicleSold;
 
 
+
+
     public double getTotalPrice(){
         if(SalesContract.isFinanceOption()){
             return getTotalPrice();
@@ -53,16 +55,16 @@ public abstract class Contract {
         return custName;
     }
 
-    public void setCustName(String custName) {
-        this.custName = custName;
+    public static void setCustName(String custName) {
+        Contract.custName = custName;
     }
 
     public static String getCustEmail() {
         return custEmail;
     }
 
-    public void setCustEmail(String custEmail) {
-        this.custEmail = custEmail;
+    public static void setCustEmail(String custEmail) {
+        Contract.custEmail = custEmail;
     }
 
     public static double getTotPrice() {

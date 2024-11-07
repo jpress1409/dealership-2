@@ -1,9 +1,9 @@
 package com.pluralsight;
 
 public class LeaseContract extends Contract {
-    private static double expectedEndingValue;
-    private static double leaseFee;
-    private static double monthlyPayment;
+    private double expectedEndingValue;
+    private double leaseFee;
+    private double monthlyPayment;
 
     public LeaseContract() {
 
@@ -23,23 +23,23 @@ public class LeaseContract extends Contract {
         return (getVehicleSold().getPrice() - expectedEndingValue) + leaseFee;
     }
 
-    public static double getExpectedEndingValue() {
+    public double getExpectedEndingValue() {
         return expectedEndingValue;
     }
 
     public void setExpectedEndingValue(double expEndVal) {
-        LeaseContract.expectedEndingValue = expectedEndingValue;
+        this.expectedEndingValue = expectedEndingValue;
     }
 
-    public static double getLeaseFee() {
+    public double getLeaseFee() {
         return leaseFee;
     }
 
     public void setLeaseFee(double leaseFee) {
-        LeaseContract.leaseFee = leaseFee;
+        this.leaseFee = leaseFee;
     }
     public void setMonthlyPay(double monthlyPay) {
-        LeaseContract.monthlyPayment = monthlyPay;
+        this.monthlyPayment = monthlyPay;
     }
 
 }
