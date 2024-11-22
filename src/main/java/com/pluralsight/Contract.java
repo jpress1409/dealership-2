@@ -1,85 +1,55 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
+
 public abstract class Contract {
-    private String dateOfContract;
-    private static String custName;
-    private static String custEmail;
-    private static double totalPrice;
-    private static double monthlyPay;
-    private static int numOfMonths;
-    private static Vehicle vehicleSold;
+    private LocalDate date;
+    private String customerName;
+    private String customerEmail;
+    private Vehicle vehicleSold;
+    private double totalPrice;
+    private double monthlyPayment;
 
-
-
-
-    public double getTotalPrice(){
-        if(SalesContract.isFinanceOption()){
-            return getTotalPrice();
-        }
-        return getTotalPrice();
+    public Contract(LocalDate date, String customerName, String customerEmail, Vehicle vehicleSold) {
+        this.date = date;
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+        this.vehicleSold = vehicleSold;
     }
 
-    public double getMonthlyPayment(){
-        if(numOfMonths == 48){
-            return (1.0425 * totalPrice) / numOfMonths;
-        }
-        return (totalPrice * 1.0525) /  numOfMonths;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public static void setTotalPrice(double totalPrice) {
-        Contract.totalPrice = totalPrice;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public int getNumOfMonths() {
-        return numOfMonths;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setNumOfMonths(int numOfMonths) {
-        this.numOfMonths = numOfMonths;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public static Vehicle getVehicleSold() {
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public Vehicle getVehicleSold() {
         return vehicleSold;
     }
 
-
-    public String getDateOfContract() {
-        return dateOfContract;
+    public void setVehicleSold(Vehicle vehicleSold) {
+        this.vehicleSold = vehicleSold;
     }
 
-    public void setDateOfContract(String dateOfContract) {
-        this.dateOfContract = dateOfContract;
-    }
+    public abstract double getTotalPrice();
 
-    public static String getCustName() {
-        return custName;
-    }
-
-    public static void setCustName(String custName) {
-        Contract.custName = custName;
-    }
-
-    public static String getCustEmail() {
-        return custEmail;
-    }
-
-    public static void setCustEmail(String custEmail) {
-        Contract.custEmail = custEmail;
-    }
-
-    public static double getTotPrice() {
-        return totalPrice;
-    }
-
-    public void setTotPrice(double totPrice) {
-        this.totalPrice = totPrice;
-    }
-
-    public double getMonthlyPay() {
-        return monthlyPay;
-    }
-
-    public void setMonthlyPay(double monthlyPay) {
-        this.monthlyPay = monthlyPay;
-    }
+    public abstract double getMonthlyPayment();
 }

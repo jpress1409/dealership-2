@@ -1,18 +1,21 @@
 package com.pluralsight;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
 
+    private ContractFileMan fileMan = new ContractFileMan();
     private String FILE_NAME = "contracts.csv";
     private Dealership dealership;
     private static Scanner scan = new Scanner(System.in);
 
-    private Dealership init() {
+    public UserInterface() throws IOException {
+    }
+
+    public Dealership init() {
         DealershipFileMan fileMan = new DealershipFileMan();
 
         return fileMan.getDealership();
@@ -48,7 +51,7 @@ public class UserInterface {
             case 7 -> processGetAllVehicle();
             case 8 -> processAddVehicleRequest();
             case 9 -> processRemoveVehicleRequest(inventory);
-            case 10 -> sellRequestMenu();
+            case 10 -> processSellLeaseVehicleRequest();
             case 99 -> loop = false;
             default -> System.out.println("Invalid Entry");
 
@@ -56,7 +59,7 @@ public class UserInterface {
 
     }
 
-    private void displayVehicles(ArrayList<Vehicle> inventory) {
+    public void displayVehicles(ArrayList<Vehicle> inventory) {
         for (Vehicle vehicle : inventory) {
             System.out.println(vehicle);
         }
@@ -175,39 +178,64 @@ public class UserInterface {
         }
     }
 
-    public void sellRequestMenu() throws IOException {
-        System.out.println("(1)Lease or (2)Sale");
-        int choice = scan.nextInt();
+
+    public void processSellLeaseVehicleRequest() {
+        LocalDate date = LocalDate.now();
+
+        System.out.print("Enter the VIN of the vehicle to sell or lease: ");
+        int vin = scan.nextInt();
         scan.nextLine();
 
-        switch (choice) {
-            case 1 -> {
-                LeaseContract leaseContract = new LeaseContract();
-                ContractFileMan.saveContract(leaseContract);
-            }
-            case 2 -> {
-                SalesContract salesContract = new SalesContract();
-                ContractFileMan.saveContract(salesContract);
-            }
-            default -> System.out.println("Invalid Input");
-        }
-    }
+        Vehicle vehicle = null;
 
-
-    public Vehicle processSellVehicleRequest(ArrayList<Vehicle> inventory) {
-        init();
-
-        System.out.println("Enter VIN of vehicle you would like to sell");
-        int vin = scan.nextInt();
-
-        for (Vehicle vehicle : inventory) {
-
-            if (vehicle != null && vin == vehicle.getVin()) {
-                System.out.println("Vehicle null");
-                return vehicle;
+        for (Vehicle vehicleInDealership : dealership.getAllVehicles()) {
+            if (vehicleInDealership.getVin() == vin) {
+                vehicle = vehicleInDealership;
             }
         }
 
-        return null;
+        if (vehicle == null) {
+            System.out.println("Vehicle not found. Please try again.");
+            return;
+        }
+
+        System.out.print("Enter the customer name: ");
+        String customerName = scan.nextLine();
+
+        System.out.print("Enter the customer email: ");
+        String customerEmail = scan.nextLine();
+
+        System.out.print("Is it a sale or lease? (sale/lease): ");
+        String contractType = scan.nextLine();
+
+        Contract contract;
+        if (contractType.equalsIgnoreCase("sale")) {
+            System.out.print("Is financing available? (yes/no): ");
+            String financeOption = scan.nextLine();
+
+            double salesTaxAmount = vehicle.getPrice() * 0.05;
+            double recordingFee = 100;
+            double processingFee = vehicle.getPrice() < 10000 ? 295 : 495;
+            boolean finance = financeOption.equalsIgnoreCase("yes");
+
+            contract = new SalesContract(date, customerName, customerEmail, vehicle, salesTaxAmount, recordingFee, processingFee, finance);
+        } else if (contractType.equalsIgnoreCase("lease")) {
+            double expectedEndingValue = vehicle.getPrice() / 2;
+            double leaseFee = vehicle.getPrice() * 0.07;
+
+            contract = new LeaseContract(date, customerName, customerEmail, vehicle, expectedEndingValue, leaseFee);
+        } else {
+            System.out.println("Invalid contract type. Please try again.");
+            return;
+        }
+
+        ContractFileMan.saveContract(contract);
+        dealership.removeVehicle();
+
+        DealershipFileMan manager = new DealershipFileMan();
+        manager.saveDealership(dealership);
+
+        System.out.println("Contract saved successfully!");
     }
+
 }
